@@ -1,0 +1,24 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.9.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+}
+
+group = 'com.auth'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'com.h2database', name: 'h2', version: '1.4.199'
+	// compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.0.1.RELEASE'
+	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.3.RELEASE'
+	// compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.0.1.RELEASE'
+	
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
