@@ -4,6 +4,7 @@ import com.auth.tokenserver.model.CustomUser;
 import com.auth.tokenserver.model.UserDTO;
 import com.auth.tokenserver.payloadManager.PayloadHandler;
 import com.auth.tokenserver.repository.UserRepository;
+import com.auth.tokenserver.util.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -14,8 +15,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +35,7 @@ public class CustomAuthService implements UserDetailsService {
     @PostConstruct
     private void setUpDefaultUser() {
         CustomUser model = new CustomUser();
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        String password = encoder.encode("password");
+        String password = PasswordHelper.getEncryptedPassword("password");
 
         model.setId(1);
         model.setUsername("admin");
@@ -63,10 +61,7 @@ public class CustomAuthService implements UserDetailsService {
     @Transactional
     public int saveUser (UserDTO userDTO) {
         CustomUser model = new CustomUser();
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        String password = encoder.encode(userDTO.getPassword());
-
-        model.setId(userDTO.getId());
+        String password = PasswordHelper.getEncryptedPassword(userDTO.getPassword());
         model.setUsername(userDTO.getUsername());
         model.setPassword(password);
         return userRepository.save(model).getId();
