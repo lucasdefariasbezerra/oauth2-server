@@ -1,7 +1,6 @@
 package com.auth.tokenserver.repository;
 
 import com.auth.tokenserver.model.CustomUser;
-import com.auth.tokenserver.model.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,6 +13,6 @@ public interface UserRepository extends JpaRepository<CustomUser, Integer> {
 
     Optional<CustomUser> findFirstByUsername(String username);
 
-    @Query("SELECT c from CustomUser c")
+    @Query("SELECT new com.auth.tokenserver.model.CustomUser(c.id,c.username) from CustomUser c")
     List<CustomUser> getAllUsers();
 }

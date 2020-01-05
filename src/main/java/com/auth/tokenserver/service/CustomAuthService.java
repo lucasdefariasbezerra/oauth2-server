@@ -6,7 +6,6 @@ import com.auth.tokenserver.payloadManager.PayloadHandler;
 import com.auth.tokenserver.repository.UserRepository;
 import com.auth.tokenserver.util.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,7 +44,7 @@ public class CustomAuthService implements UserDetailsService {
 
 
     @Override
-    @Cacheable(value = "user",key = "#username")
+    //@Cacheable(value = "user",key = "#username")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         CustomUser customUser = userRepository
                 .findFirstByUsername(username)

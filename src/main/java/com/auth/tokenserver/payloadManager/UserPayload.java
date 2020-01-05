@@ -25,6 +25,4 @@ public class UserPayload extends PayloadHandler<UserDTO, CustomUser> {
                 .collect(Collectors.toList());
         this.setBodyList(dtoList);
     }
-
-
 }
