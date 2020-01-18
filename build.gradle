@@ -23,9 +23,11 @@ dependencies {
 	runtime group: 'org.flywaydb', name: 'flyway-gradle-plugin', version: '5.2.4'
 }
 
+
+
 flyway {
-	url = '${DB_URL:jdbc:mysql://localhost:3306/tokenserver?useSSL=false&useTimezone=true&serverTimezone=UTC}'
-	user = '${DB_USER:root}'
+	url = 'jdbc:mysql://localhost:3306/tokenserver?allowPublicKeyRetrieval=true&useSSL=false&useTimezone=true&serverTimezone=UTC'
+	user = 'root'
 	password = '${DB_PASSWORD:root}'
 	schemas = ['tokenserver']
 }
