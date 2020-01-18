@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.1.9.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
+	id 'org.flywaydb.flyway' version '5.2.4'
 }
 
 group = 'com.auth'
@@ -13,12 +14,18 @@ repositories {
 }
 
 dependencies {
+	// compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.0.1.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	// implementation group: 'com.h2database', name: 'h2', version: '1.4.199'
-	// compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.0.1.RELEASE'
 	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.3.RELEASE'
-	// compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.0.1.RELEASE'
 	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.12'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	runtime group: 'org.flywaydb', name: 'flyway-gradle-plugin', version: '5.2.4'
+}
+
+flyway {
+	url = '${DB_URL:jdbc:mysql://localhost:3306/tokenserver?useSSL=false&useTimezone=true&serverTimezone=UTC}'
+	user = '${DB_USER:root}'
+	password = '${DB_PASSWORD:root}'
+	schemas = ['tokenserver']
 }
