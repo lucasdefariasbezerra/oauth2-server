@@ -1,18 +1,16 @@
 package com.auth.tokenserver.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Objects;
 
-public class UserDTO {
+public class CustomUserDTO {
     private Integer id;
     private String username;
     private String password;
 
-    public UserDTO() {
+    public CustomUserDTO() {
     }
 
-    public UserDTO(Integer id, String username) {
+    public CustomUserDTO(Integer id, String username) {
         this.id = id;
         this.username = username;
     }
@@ -45,10 +43,10 @@ public class UserDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserDTO userDTO = (UserDTO) o;
-        return Objects.equals(id, userDTO.id) &&
-                Objects.equals(username, userDTO.username) &&
-                Objects.equals(password, userDTO.password);
+        CustomUserDTO customUserDTO = (CustomUserDTO) o;
+        return Objects.equals(id, customUserDTO.id) &&
+                Objects.equals(username, customUserDTO.username) &&
+                Objects.equals(password, customUserDTO.password);
     }
 
     @Override

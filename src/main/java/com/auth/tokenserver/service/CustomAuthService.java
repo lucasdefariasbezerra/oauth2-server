@@ -1,8 +1,8 @@
 package com.auth.tokenserver.service;
 
 import com.auth.tokenserver.model.CustomUser;
-import com.auth.tokenserver.model.UserDTO;
-import com.auth.tokenserver.payloadManager.PayloadHandler;
+import com.auth.tokenserver.model.CustomUserDTO;
+import com.auth.tokenserver.payloadManager.GenericPayloadGenerator;
 import com.auth.tokenserver.repository.UserRepository;
 import com.auth.tokenserver.util.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class CustomAuthService implements UserDetailsService {
     UserRepository userRepository;
 
     @Autowired
-    PayloadHandler<UserDTO, CustomUser> payloadHandler;
+    GenericPayloadGenerator<CustomUserDTO, CustomUser> userPayloadGenerator;
 
     @PostConstruct
     private void setUpDefaultUser() {
@@ -58,17 +58,29 @@ public class CustomAuthService implements UserDetailsService {
     }
 
     @Transactional
-    public int saveUser (UserDTO userDTO) {
+    public int saveUser(CustomUserDTO customUserDTO) {
         CustomUser model = new CustomUser();
-        String password = PasswordHelper.getEncryptedPassword(userDTO.getPassword());
-        model.setUsername(userDTO.getUsername());
+        String password = PasswordHelper.getEncryptedPassword(customUserDTO.getPassword());
+        model.setUsername(customUserDTO.getUsername());
         model.setPassword(password);
         return userRepository.save(model).getId();
     }
 
-    public ResponseEntity<?> allUsers() {
+    public ResponseEntity<?> getAllUsers() {
         List<CustomUser> list = userRepository.getAllUsers();
-        payloadHandler.mapToDTO(list);
-        return payloadHandler.buildPayload(HttpStatus.OK, true);
+        userPayloadGenerator.mapToDTO(list);
+        return userPayloadGenerator.buildSuccessPayload(HttpStatus.OK, true);
+    }
+
+    public ResponseEntity<?> getUserById(int id) {
+        CustomUser user = userRepository
+                .findById(id)
+                .orElse(null);
+        if (user == null) {
+            String errorMessage = "user was not found";
+            return userPayloadGenerator.buildErrorPayload(HttpStatus.NOT_FOUND, errorMessage);
+        }
+        userPayloadGenerator.mapToDTO(user);
+        return userPayloadGenerator.buildSuccessPayload(HttpStatus.OK, false);
     }
 }
