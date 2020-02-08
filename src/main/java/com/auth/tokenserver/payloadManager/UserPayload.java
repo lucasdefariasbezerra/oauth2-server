@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 public class UserPayload extends GenericPayloadGenerator<CustomUserDTO, CustomUser> {
 
     @Override
-    public ResponseEntity<?> buildSuccessPayload(HttpStatus status, boolean isList) {
+    public ResponseEntity<?> buildDataResponsePayload(HttpStatus status, boolean isList) {
         return isList ? new ResponseEntity<>(getResponseBodyList(), status) :
                 new ResponseEntity<>(getResponseBodyObject(), status);
     }
 
     @Override
-    public ResponseEntity<?> buildErrorPayload(HttpStatus status, String description) {
-        return new ResponseEntity<>(getErrorMessage(description), status);
+    public ResponseEntity<?> buildMessageResponsePayload(HttpStatus status, String fieldName, String messageDescription) {
+        return new ResponseEntity<>(buildResponseMessage(fieldName, messageDescription), status);
     }
 
     @Override

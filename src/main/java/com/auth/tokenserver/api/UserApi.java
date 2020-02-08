@@ -14,9 +14,9 @@ public class UserApi {
     @Autowired
     CustomAuthService authService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String saveUser(@RequestBody CustomUserDTO user) {
-        return String.valueOf(authService.saveUser(user));
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> saveUser(@RequestBody CustomUserDTO user) {
+        return authService.saveUser(user);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

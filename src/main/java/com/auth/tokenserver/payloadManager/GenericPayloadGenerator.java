@@ -17,9 +17,9 @@ public abstract class GenericPayloadGenerator<T, E> {
         objectMapper = new ObjectMapper();
     }
 
-    public abstract ResponseEntity<?> buildSuccessPayload(HttpStatus status, boolean isList);
+    public abstract ResponseEntity<?> buildDataResponsePayload(HttpStatus status, boolean isList);
 
-    public abstract ResponseEntity<?> buildErrorPayload(HttpStatus status, String errorDescription);
+    public abstract ResponseEntity<?> buildMessageResponsePayload(HttpStatus status, String fieldName, String messageDescription);
 
     public abstract void mapToDTO(List<E> resultList);
 
@@ -41,9 +41,9 @@ public abstract class GenericPayloadGenerator<T, E> {
         this.responseBodyObject = responseBodyObject;
     }
 
-    public ObjectNode getErrorMessage(String description) {
+    public ObjectNode buildResponseMessage(String fieldName, String value) {
         ObjectNode objectNode = objectMapper.createObjectNode();
-        objectNode.put("description", description);
+        objectNode.put(fieldName, value);
         return objectNode;
     }
 }

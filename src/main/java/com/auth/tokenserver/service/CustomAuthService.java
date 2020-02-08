@@ -58,18 +58,21 @@ public class CustomAuthService implements UserDetailsService {
     }
 
     @Transactional
-    public int saveUser(CustomUserDTO customUserDTO) {
+    public ResponseEntity<?> saveUser(CustomUserDTO customUserDTO) {
         CustomUser model = new CustomUser();
         String password = PasswordHelper.getEncryptedPassword(customUserDTO.getPassword());
         model.setUsername(customUserDTO.getUsername());
         model.setPassword(password);
-        return userRepository.save(model).getId();
+        if (userRepository.save(model).getId() == null) {
+            return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.OK, "desc", "user saved");
+        }
+        return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.BAD_REQUEST, "error", "user not saved");
     }
 
     public ResponseEntity<?> getAllUsers() {
         List<CustomUser> list = userRepository.getAllUsers();
         userPayloadGenerator.mapToDTO(list);
-        return userPayloadGenerator.buildSuccessPayload(HttpStatus.OK, true);
+        return userPayloadGenerator.buildDataResponsePayload(HttpStatus.OK, true);
     }
 
     public ResponseEntity<?> getUserById(int id) {
@@ -78,9 +81,9 @@ public class CustomAuthService implements UserDetailsService {
                 .orElse(null);
         if (user == null) {
             String errorMessage = "user was not found";
-            return userPayloadGenerator.buildErrorPayload(HttpStatus.NOT_FOUND, errorMessage);
+            return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.NOT_FOUND, "error", errorMessage);
         }
         userPayloadGenerator.mapToDTO(user);
-        return userPayloadGenerator.buildSuccessPayload(HttpStatus.OK, false);
+        return userPayloadGenerator.buildDataResponsePayload(HttpStatus.OK, false);
     }
 }
