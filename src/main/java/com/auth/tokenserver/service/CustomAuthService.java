@@ -6,6 +6,7 @@ import com.auth.tokenserver.payloadManager.GenericPayloadGenerator;
 import com.auth.tokenserver.repository.UserRepository;
 import com.auth.tokenserver.util.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,7 +45,7 @@ public class CustomAuthService implements UserDetailsService {
 
 
     @Override
-    //@Cacheable(value = "user",key = "#username")
+    @Cacheable(value = "user", key = "#username")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         CustomUser customUser = userRepository
                 .findFirstByUsername(username)
@@ -64,26 +65,22 @@ public class CustomAuthService implements UserDetailsService {
         model.setUsername(customUserDTO.getUsername());
         model.setPassword(password);
         if (userRepository.save(model).getId() == null) {
-            return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.OK, "desc", "user saved");
+            return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.BAD_REQUEST, "error", "user not saved");
         }
-        return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.BAD_REQUEST, "error", "user not saved");
+        return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.OK, "desc", "user saved");
     }
 
-    public ResponseEntity<?> getAllUsers() {
-        List<CustomUser> list = userRepository.getAllUsers();
-        userPayloadGenerator.mapToDTO(list);
-        return userPayloadGenerator.buildDataResponsePayload(HttpStatus.OK, true);
+    @Cacheable("user_list")
+    public List<CustomUser> getAllUsers() {
+        List<CustomUser> userList = userRepository.getAllUsers();
+        return userList;
     }
 
-    public ResponseEntity<?> getUserById(int id) {
+    @Cacheable(value = "custom_user", key = "#id")
+    public CustomUser getUserById(int id) {
         CustomUser user = userRepository
                 .findById(id)
                 .orElse(null);
-        if (user == null) {
-            String errorMessage = "user was not found";
-            return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.NOT_FOUND, "error", errorMessage);
-        }
-        userPayloadGenerator.mapToDTO(user);
-        return userPayloadGenerator.buildDataResponsePayload(HttpStatus.OK, false);
+        return user;
     }
 }

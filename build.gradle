@@ -14,16 +14,14 @@ repositories {
 }
 
 dependencies {
-	// compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.0.1.RELEASE'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.0.1.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.3.RELEASE'
+	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.8.RELEASE'
 	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.12'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	runtime group: 'org.flywaydb', name: 'flyway-gradle-plugin', version: '5.2.4'
 }
-
-
 
 flyway {
 	url = 'jdbc:mysql://localhost:3306/tokenserver?allowPublicKeyRetrieval=true&useSSL=false&useTimezone=true&serverTimezone=UTC'
