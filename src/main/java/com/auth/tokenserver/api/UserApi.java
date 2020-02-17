@@ -22,7 +22,10 @@ public class UserApi {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> saveUser(@RequestBody CustomUserDTO user) {
-        return authService.saveUser(user);
+        if (authService.saveUser(user)) {
+            return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.OK, "desc", "user saved");
+        }
+        return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.BAD_REQUEST, "error", "user not saved");
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

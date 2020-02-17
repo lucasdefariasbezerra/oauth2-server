@@ -59,15 +59,12 @@ public class CustomAuthService implements UserDetailsService {
     }
 
     @Transactional
-    public ResponseEntity<?> saveUser(CustomUserDTO customUserDTO) {
+    public boolean saveUser(CustomUserDTO customUserDTO) {
         CustomUser model = new CustomUser();
         String password = PasswordHelper.getEncryptedPassword(customUserDTO.getPassword());
         model.setUsername(customUserDTO.getUsername());
         model.setPassword(password);
-        if (userRepository.save(model).getId() == null) {
-            return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.BAD_REQUEST, "error", "user not saved");
-        }
-        return userPayloadGenerator.buildMessageResponsePayload(HttpStatus.OK, "desc", "user saved");
+        return userRepository.save(model).getId() == null;
     }
 
     @Cacheable("user_list")
