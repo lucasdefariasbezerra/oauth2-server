@@ -1,12 +1,6 @@
 pipeline {
-    agent {
-        docker {
-            label 'windows'
-            image 'mcr.microsoft.com/powershell'
-            image 'gradle:jdk11'
-        }
-    }
-    //agent any
+    //agent { docker { image 'maven:3.3.3' } }
+    agent any
     stages {
         stage('build') {
             steps {
