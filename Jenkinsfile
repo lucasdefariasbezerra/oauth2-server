@@ -2,7 +2,7 @@ pipeline {
     //agent { docker { image 'maven:3.3.3' } }
     agent any
     triggers {
-        githubPush() // Enabling being build on Push
+        githubPush()
       }
     stages {
         stage('build') {
