@@ -7,8 +7,8 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'echo hello world'
-                sh './gradlew -v'
+                sh 'echo building jar file'
+                sh './gradlew clean build -x test'
             }
         }
     }
