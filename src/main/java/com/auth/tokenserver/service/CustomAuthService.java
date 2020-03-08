@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/* testing web hoodssk */
 @Service
 public class CustomAuthService implements UserDetailsService {
 
