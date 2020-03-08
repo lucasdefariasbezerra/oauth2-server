@@ -11,5 +11,12 @@ pipeline {
                 sh './gradlew clean build -x test'
             }
         }
+
+        stage('deployment') {
+            steps {
+               sh 'echo testing deployment'
+               sh 'pwd'
+            }
+        }
     }
 }
