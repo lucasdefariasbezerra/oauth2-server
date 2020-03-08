@@ -49,9 +49,7 @@ public class CustomAuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         CustomUser customUser = userRepository
                 .findFirstByUsername(username)
-                .orElseThrow(() -> {
-                    throw  new UsernameNotFoundException("User was not found");
-                });
+                .orElseThrow(() -> new UsernameNotFoundException("User was not found"));
         Collection<GrantedAuthority> list = new ArrayList<>();
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");
         list.add(authority);
