@@ -26,8 +26,8 @@ dependencies {
 
 
 flyway {
-	url = 'jdbc:mysql://localhost:3306/tokenserver?allowPublicKeyRetrieval=true&useSSL=false&useTimezone=true&serverTimezone=UTC'
-	user = 'root'
-	password = '${DB_PASSWORD:root}'
+	url = '${DB_URL}'
+	user = '${DB_USER}'
+	password = '${DB_PASSWORD}'
 	schemas = ['tokenserver']
 }
