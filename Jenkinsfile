@@ -9,7 +9,7 @@ pipeline {
         stage('test') {
             steps {
                 sh 'echo building jar file'
-                sh './gradlew test'
+                sh './gradlew build -x test'
             }
         }
 
