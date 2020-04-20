@@ -18,7 +18,7 @@ pipeline {
                sh 'echo testing deployment'
                sh 'pwd'
                sshagent(['1db8cc9b-65c6-4edb-93fb-67125fcdf43f']) {
-                  sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.22.186.12 odds.sh'
+                  sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.22.186.12 odds.sh && exit'
                }
             }
         }
