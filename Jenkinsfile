@@ -6,20 +6,19 @@ pipeline {
     }
 
     stages {
-        stage('build') {
+        stage('test') {
             steps {
                 sh 'echo building jar file'
-                sh './gradlew clean build -x test'
+                sh './gradlew test'
             }
         }
 
-        stage('deployment') {
+        stage('build/deployment') {
             steps {
                sh 'echo testing deployment'
                sh 'pwd'
                sshagent(['1db8cc9b-65c6-4edb-93fb-67125fcdf43f']) {
-                  sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/oauth-build-pipeline_master/build/libs/tokenserver-0.0.1-SNAPSHOT.jar ec2-user@18.220.34.140:/odds/odds-jar'
-                  sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.220.34.140 pwd'
+                  sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.22.186.12 odds.sh'
                }
             }
         }
