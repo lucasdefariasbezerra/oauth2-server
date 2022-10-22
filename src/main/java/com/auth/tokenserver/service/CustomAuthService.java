@@ -64,6 +64,11 @@ public class CustomAuthService implements UserDetailsService {
         return userRepository.save(model).getId();
     }
 
+    public UserDTO findUserByName(String name) {
+        CustomUser customUser = userRepository.findFirstByUsername(name).orElseThrow(IllegalArgumentException::new);
+        return new UserDTO(customUser);
+    }
+
     public ResponseEntity<?> allUsers() {
         List<CustomUser> list = userRepository.getAllUsers();
         payloadHandler.mapToDTO(list);

@@ -1,5 +1,7 @@
 package com.auth.tokenserver.model;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.util.Objects;
 

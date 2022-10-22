@@ -19,6 +19,9 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableResourceServer
@@ -64,12 +67,23 @@ public class OAuthConfig extends AuthorizationServerConfigurerAdapter {
                 .userDetailsService(customAuthService);
     }
 
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-        oauthServer
+    public void configure(AuthorizationServerSecurityConfigurer security) {
+        security
                 .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()")
                 .passwordEncoder(encoder)
         .allowFormAuthenticationForClients();
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.applyPermitDefaultValues();
+
+        // add allow-origin to the headers
+        config.addAllowedHeader("access-control-allow-origin");
+
+        source.registerCorsConfiguration("/oauth/token", config);
+        CorsFilter filter = new CorsFilter(source);
+        security.addTokenEndpointAuthenticationFilter(filter);
     }
 
     @Bean

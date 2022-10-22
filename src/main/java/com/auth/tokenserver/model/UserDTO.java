@@ -12,6 +12,11 @@ public class UserDTO {
     public UserDTO() {
     }
 
+    public UserDTO(CustomUser customUser) {
+        this.id = customUser.getId();
+        this.username = customUser.getUsername();
+    }
+
     public UserDTO(Integer id, String username) {
         this.id = id;
         this.username = username;
